@@ -1,0 +1,87 @@
+### Understanding the Code Step-by-Step
+
+This breakdown helps you understand each part of the code and how it works to read lines from a file descriptor, handle dynamic memory allocation, and duplicate strings.
+
+
+1. Includes and Setup
+
+    - `#include "get_next_line.h"`: This is the header file for the `get_next_line` function. It contains the function prototype and necessary definitions.
+    
+    - The commented out lines: These are alternative libraries that are sometimes used for testing. When using Grademe, you'd remove the first `#include` and include the standard libraries like `unistd.h`, `stdlib.h`, `fcntl.h`, and `stdio.h`.
+
+
+2. `ft_strdup` Function
+
+    Purpose: This function creates a copy of a given string.
+
+    - `char *c`: The string you want to duplicate.
+    
+    - `int i`: This variable keeps track of the index when iterating through the string.
+    
+    - `char *res`: This pointer will hold the newly allocated memory for the copied string.
+    
+    - `while (c[i])`: This loop counts the length of the string `c`.
+    
+    - `res = malloc(i + 1)`: Allocates enough memory to hold the string, plus the null-terminator.
+    
+    - The second loop (`while (c[i])`): This loop copies each character from the original string `c` into the newly allocated memory (`res`).
+    
+    - `res[i] = '\0'`: Adds the null-terminator at the end of the copied string.
+
+    - The function then returns the newly allocated string (`res`).
+
+
+3. `get_next_line` Function
+
+    Purpose: This function reads a line of text from a file descriptor and returns it.
+
+    - `static char buffer[BUFFER_SIZE]`: A static buffer that stores the content read from the file.
+    
+    - `static int size`: A static variable that stores the size of the data in the buffer.
+    
+    - `static int pos`: A static variable that keeps track of the current position in the buffer.
+    
+    - `char line[5000]`: An array to hold the line being read.
+    
+    - `if (fd < 0 || BUFFER_SIZE <= 0)`: If the file descriptor is invalid or the buffer size is non-positive, return `NULL` immediately.
+    
+    - `while (9)`: This infinite loop continues until a line is read or the end of the file is reached.
+    
+    - `if (pos >= size)`: If the current position in the buffer exceeds the available data, it reads new data into the buffer.
+    
+    - `size = read(fd, buffer, BUFFER_SIZE)`: Reads data into the buffer from the file descriptor.
+    
+    - `pos = 0`: Resets the position index to 0 for the newly read data.
+    
+    - `if (size <= 0)`: If the read size is less than or equal to 0 (end of file or error), the loop breaks.
+    
+    - `if (buffer[pos] == '\n')`: If the current character in the buffer is a newline (`\n`), it adds that character to the line and breaks out of the loop.
+    
+    - `line[i++] = buffer[pos++]`: Otherwise, it adds the current character to the line and increments the position in the buffer.
+    
+    - `if (i == 0 && size <= 0)`: If no characters were read (i.e., `i` is 0) and the size is 0 (end of file or error), return `NULL`.
+    
+    - `line[i] = '\0'`: Adds the null-terminator to the end of the line.
+    
+    - The function returns the line by calling `ft_strdup(line)` to duplicate the line.
+
+
+4. `main` Function (Commented Out)
+
+    Purpose: This is a test function that demonstrates how to use `get_next_line`.
+
+    - The `main` function is commented out, but if used, it opens a file (`lorem.txt`) and repeatedly calls `get_next_line` to read each line from the file.
+    
+    - `fd = open("./lorem.txt", O_RDONLY)`: Opens the file `lorem.txt` in read-only mode.
+    
+    - `res = get_next_line(fd)`: Calls `get_next_line` to read the first line from the file.
+    
+    - `while (res)`: Loops through each line until `get_next_line` returns `NULL` (end of file).
+    
+    - `printf("%s", res)`: Prints the line to the console.
+    
+    - `free(res)`: Frees the memory allocated for the line after printing.
+    
+    - `close(fd)`: Closes the file descriptor when done reading.
+
+
