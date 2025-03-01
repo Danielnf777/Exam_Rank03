@@ -1,8 +1,13 @@
+# include "get_next_line.h"
+
+/* 
+ //For testing on Grademe, delete the line above #include "get_next_line.h" and include these libraries.
 
 #include <unistd.h>
 #include <stdlib.h>
 # include <fcntl.h>
 #include <stdio.h>
+*/
 
 char	*ft_strdup(char *c)
 {
