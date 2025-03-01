@@ -1,68 +1,75 @@
+
 #include <unistd.h>
 #include <stdlib.h>
 # include <fcntl.h>
 #include <stdio.h>
 
-char	*ft_strdup(char *src)
+char	*ft_strdup(char *c)
 {
-	int	i = 0;
-	char *dest;
-	while (src[i])
-		i++;
-	dest = (char *)malloc(sizeof(char) * (i + 1));
+	int	i;
+	char	*res;
+
 	i = 0;
-	while (src[i])
+	while (c[i])
+		i++;
+	res = malloc(i + 1);
+	i = 0;
+	while (c[i])
 	{
-		dest[i] = src[i];
+		res[i] = c[i];
 		i++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	res[i] = '\0';
+	return (res);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	buffer[BUFFER_SIZE];
-	static int buffer_read;
-	static int	buffer_pos;
-	int	i = 0;
+	static int	size;
+	static int	pos;
+	int	i;
 	char	line[5000];
-	if (fd < 0 ||  BUFFER_SIZE <= 0)
+
+	i = 0;
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return NULL;
-	while (1)
+	while (9)
 	{
-		if (buffer_pos >= buffer_read)
+		if (pos >= size)
 		{
-			buffer_read = read(fd, buffer, BUFFER_SIZE);
-			buffer_pos = 0;
-			if (buffer_read <= 0)
-				break ;
+			size = read(fd, buffer, BUFFER_SIZE);
+			pos = 0;
+			if (size <= 0)
+				break;
 		}
-		if (buffer[buffer_pos] == '\n')
+		if (buffer[pos] == '\n')
 		{
-		line[i++] = buffer[buffer_pos++];
-		break ;
+			line[i++] = buffer[pos++];
+			break;
 		}
-		 line[i++] = buffer[buffer_pos++];
+		line[i++] = buffer[pos++];
 	}
+	if (i == 0 && size <= 0)
+		return (NULL);
 	line[i] = '\0';
-	if (i == 0 && buffer_read <= 0)
-		return NULL;
 	return (ft_strdup(line));
 }
 /*
 int	main(void)
-{	
-	char	*test;
-	int fd = open("./txt.txt", O_RDONLY);
-	test = get_next_line(fd);
-	while (test)
+{
+	int	fd;
+	char	*res;
+
+	fd = open("./lorem.txt", O_RDONLY);
+	res = get_next_line(fd);
+	while (res)
 	{
-    printf("%s", test);
-	free(test);
-	test = get_next_line(fd);
+		printf("%s", res);
+		free(res);
+		res = get_next_line(fd);
 	}
 	close(fd);
-    return (0);
-}*/
-
+	return (0);
+}
+*/
