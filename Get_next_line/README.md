@@ -17,6 +17,6 @@ Your function must be memory leak free. When you've reached the EOF, your functi
 
 Calling your function get_next_line() in a loop will therefore allow you to read the text available on a file descriptor one line at a time until the end of the text, no matter the size of either the text or one of its lines.
 
-Make sure that your function behaves well when it reads from a file, from the standard output, from a redirection, etc...
+Make sure that your function behaves well when it reads from a file, from the standard output, from a redirection, etc... 
 
 No call to another function will be done on the file descriptor between 2 calls of get_next_line(). Finally we consider that get_next_line() has an undefined behaviour when reading from a binary file.
